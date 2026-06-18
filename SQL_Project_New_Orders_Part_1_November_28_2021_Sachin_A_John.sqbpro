@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="C:/Users/sachi/Documents/SQL/New Orders.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="125"/><column_width id="3" width="2528"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><current_table name="4,11:mainORDER_ITEMS"/><default_encoding codec=""/><browse_table_settings><table schema="main" name="ADDRESS" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort><column index="2" mode="0"/></sort><column_widths><column index="1" value="124"/><column index="2" value="300"/><column index="3" value="300"/><column index="4" value="141"/><column index="5" value="124"/><column index="6" value="89"/><column index="7" value="93"/></column_widths><filter_values><column index="7" value="USA"/></filter_values><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="CARTON" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="113"/><column index="2" value="52"/><column index="3" value="71"/><column index="4" value="77"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="ONLINE_CUSTOMER" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="137"/><column index="2" value="176"/><column index="3" value="176"/><column index="4" value="225"/><column index="5" value="176"/><column index="6" value="124"/><column index="7" value="261"/><column index="8" value="212"/><column index="9" value="187"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="ORDER_HEADER" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="102"/><column index="2" value="137"/><column index="3" value="126"/><column index="4" value="148"/><column index="5" value="154"/><column index="6" value="148"/><column index="7" value="228"/><column index="8" value="118"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="ORDER_ITEMS" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="102"/><column index="3" value="194"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="PRODUCT" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="2" value="300"/><column index="3" value="217"/><column index="4" value="156"/><column index="5" value="258"/><column index="6" value="52"/><column index="7" value="71"/><column index="8" value="77"/><column index="9" value="81"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="PRODUCT_CLASS" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="217"/><column index="2" value="215"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="SHIPPER" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="118"/><column index="2" value="147"/><column index="3" value="157"/><column index="4" value="179"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table></browse_table_settings></tab_browse><tab_sql><sql name="SQL 1">--1. Write a query to Display the product details (product_class_code, product_id, product_desc, product_price,) as per the following criteria and 
+--sort them in descending order of category: a. If the category is 2050, increase the price by 2000 b. If the category is 2051, increase the price 
+--by 500 c. If the category is 2052, increase the price by 600. Hint: Use case statement. no permanent change in table required. (60 ROWS) [NOTE: 
+--PRODUCT TABLE]
+SELECT a.PRODUCT_CLASS_CODE, a.PRODUCT_ID, a.PRODUCT_DESC,a.PRODUCT_PRICE, 
+(CASE
+WHEN a.PRODUCT_CLASS_CODE='2050' THEN a.PRODUCT_PRICE+2000
+WHEN a.PRODUCT_CLASS_CODE='2051' THEN a.PRODUCT_PRICE+500
+WHEN a.PRODUCT_CLASS_CODE='2052' THEN a.PRODUCT_PRICE+600
+ELSE a.PRODUCT_PRICE
+END) AS UPDATED_PRICE
+FROM PRODUCT a
+ORDER BY PRODUCT_CLASS_CODE DESC
+
+--2. Write a query to display (product_class_desc, product_id, product_desc, product_quantity_avail ) and Show inventory status of products as 
+--below as per their available quantity: a. For Electronics and Computer categories, if available quantity is &lt;= 10, show 'Low stock', 11 &lt;= qty
+-- &lt;= 30, show 'In stock', &gt;= 31, show 'Enough stock' b. For Stationery and Clothes categories, if qty &lt;= 20, show 'Low stock', 21 &lt;= qty &lt;= 80, 
+--show 'In stock', &gt;= 81, show 'Enough stock' c. Rest of the categories, if qty &lt;= 15 – 'Low Stock', 16 &lt;= qty &lt;= 50 – 'In Stock', &gt;= 51 – 
+--'Enough stock' For all categories, if available quantity is 0, show 'Out of stock'. Hint: Use case statement. (60 ROWS) [NOTE: TABLES TO BE 
+--USED – product, product_class]
+SELECT a.PRODUCT_CLASS_DESC, b.PRODUCT_ID, b.PRODUCT_DESC, b.PRODUCT_QUANTITY_AVAIL,
+(CASE
+WHEN b.PRODUCT_QUANTITY_AVAIL &lt;=10 AND a.PRODUCT_CLASS_DESC IN ('Electronics','Computer') THEN 'Low stock'
+WHEN b.PRODUCT_QUANTITY_AVAIL BETWEEN 11 AND 30 AND a.PRODUCT_CLASS_DESC IN ('Electronics','Computer') THEN 'In stock'
+WHEN b.PRODUCT_QUANTITY_AVAIL &gt;=31 AND a.PRODUCT_CLASS_DESC IN ('Electronics','Computer') THEN 'Enough stock'
+WHEN b.PRODUCT_QUANTITY_AVAIL &lt;=20 AND a.PRODUCT_CLASS_DESC IN ('Stationery','Clothes') THEN 'Low stock'
+WHEN b.PRODUCT_QUANTITY_AVAIL BETWEEN 21 AND 80 AND a.PRODUCT_CLASS_DESC IN ('Stationery','Clothes') THEN 'In stock'
+WHEN b.PRODUCT_QUANTITY_AVAIL &gt;=81 AND a.PRODUCT_CLASS_DESC IN ('Stationery','Clothes') THEN 'Enough stock'
+WHEN b.PRODUCT_QUANTITY_AVAIL &lt;=15 AND a.PRODUCT_CLASS_DESC IN ('Books','Promotion-High Value', 'Promotion-Medium Value','Promotion-Low Value',
+'Toys','Mobiles','Watches','Bags','Kitchen Items','Furniture')THEN 'Low stock'
+WHEN b.PRODUCT_QUANTITY_AVAIL BETWEEN 16 AND 50 AND a.PRODUCT_CLASS_DESC IN ('Books','Promotion-High Value', 'Promotion-Medium Value',
+'Promotion-Low Value','Toys','Mobiles','Watches','Bags','Kitchen Items','Furniture') THEN 'In stock'
+WHEN b.PRODUCT_QUANTITY_AVAIL &gt;=51 AND a.PRODUCT_CLASS_DESC IN ('Books','Promotion-High Value', 'Promotion-Medium Value','Promotion-Low Value',
+'Toys','Mobiles','Watches','Bags','Kitchen Items','Furniture') THEN 'Enough stock'
+WHEN b.PRODUCT_QUANTITY_AVAIL =0 THEN 'Out of stock'
+END) AS STOCK
+FROM PRODUCT_CLASS a
+INNER JOIN PRODUCT b
+ON a.PRODUCT_CLASS_CODE=b.PRODUCT_CLASS_CODE
+
+--3. Write a query to show the number of cities in all countries other than USA &amp; MALAYSIA, with more than 1 city, in the descending order of 
+--CITIES. (2 rows) [NOTE: ADDRESS TABLE]
+SELECT DISTINCT COUNTRY, count(DISTINCT CITY)
+FROM ADDRESS 
+WHERE COUNTRY NOT IN ('USA','Malaysia')
+GROUP BY COUNTRY HAVING count(DISTINCT CITY) &gt; 1
+ORDER BY COUNTRY
+
+--4. Write a query to display the customer_id,cus tomer full name ,city,pincode,and order details (order id, product class desc, product desc, 
+--subtotal(product_quantity * product_price)) for orders shipped to cities whose pin codes do not have any 0s in them. Sort the output on customer
+--name and subtotal. (52 ROWS) [NOTE: TABLE TO BE USED - online_customer, address, order_header, order_items, product, product_class]
+SELECT a.CUSTOMER_ID,(a.CUSTOMER_FNAME || ' ' || a.CUSTOMER_LNAME) AS CUSTOMER_FULLNAME, b.CITY, b.PINCODE , c.ORDER_ID, d.PRODUCT_CLASS_DESC, 
+e.PRODUCT_DESC, f.PRODUCT_QUANTITY*e.PRODUCT_PRICE AS SUB_TOTAL 
+FROM ONLINE_CUSTOMER a
+LEFT JOIN ADDRESS b
+ON a.ADDRESS_ID=b.ADDRESS_ID
+LEFT JOIN ORDER_HEADER c
+ON a.CUSTOMER_ID=c.CUSTOMER_ID
+LEFT JOIN ORDER_ITEMS f
+ON c.ORDER_ID=f.ORDER_ID
+LEFT JOIN PRODUCT e
+ON e.PRODUCT_ID=f.PRODUCT_ID
+LEFT JOIN PRODUCT_CLASS d
+ON e.PRODUCT_CLASS_CODE=d.PRODUCT_CLASS_CODE
+WHERE C.ORDER_STATUS = 'Shipped'
+GROUP BY a.CUSTOMER_ID, CUSTOMER_FULLNAME, b.CITY, b.PINCODE, c.ORDER_ID, d.PRODUCT_CLASS_DESC, e.PRODUCT_DESC, f.PRODUCT_QUANTITY,e.PRODUCT_PRICE
+HAVING b.PINCODE NOT like '%0%'
+ORDER BY CUSTOMER_FULLNAME, SUB_TOTAL
+
+--5. Write a Query to display product id,product description,totalquantity(sum(product quantity) for a given item whose product id is 201 and 
+--which item has been bought along with it maximum no. of times. Display only one record which has the maximum value for total quantity in this 
+--scenario. (USE SUB-QUERY)(1 ROW)[NOTE : ORDER_ITEMS TABLE,PRODUCT TABLE]
+SELECT PRODUCT_ID, PRODUCT_DESC, TOTAL_QUANTITY
+FROM (SELECT a.PRODUCT_ID, b.PRODUCT_DESC, sum(a.PRODUCT_QUANTITY) as TOTAL_QUANTITY
+FROM order_items a
+CROSS JOIN product b
+ON a.PRODUCT_ID=b.PRODUCT_ID
+GROUP BY a.ORDER_ID)
+ORDER BY TOTAL_QUANTITY DESC
+LIMIT 1
+
+
+
+
+</sql><current_tab id="0"/></tab_sql></sqlb_project>
